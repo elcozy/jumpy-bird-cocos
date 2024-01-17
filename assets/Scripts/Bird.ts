@@ -2,6 +2,7 @@ import {
     _decorator,
     Animation,
     CCFloat,
+    CircleCollider2D,
     Component,
     RigidBody2D,
     tween,
@@ -38,6 +39,7 @@ export class Bird extends Component {
         //Restart the bird
         this.resetBird();
         this.getComponent(RigidBody2D).awakeOnLoad = true;
+        this.getComponent(CircleCollider2D).sensor = true;
         this.getComponent(RigidBody2D).enabled = false;
         //Get the initial animation information
         this.birdAnimation = this.getComponent(Animation);
@@ -65,7 +67,7 @@ export class Bird extends Component {
 
         //stop the bird animation immediately
         this.birdAnimation.stop();
-
+        console.log("jump", this.node.position.y, this.jumpHeight);
         //start the movement of the bird
         tween(this.node.position)
             .to(

@@ -277,10 +277,10 @@
         "__id__": 13
       },
       {
-        "__id__": 6
+        "__id__": 20
       },
       {
-        "__id__": 20
+        "__id__": 6
       },
       {
         "__id__": 22
@@ -660,7 +660,7 @@
     "_enabled": true,
     "__prefab": null,
     "jumpHeight": 100,
-    "jumpDuration": 0.3,
+    "jumpDuration": 3.5,
     "_id": "c4Nb/BNFlJlYHiNpPGk5Xt"
   },
   {
@@ -727,7 +727,7 @@
     "tag": 0,
     "_group": 1,
     "_density": 1,
-    "_sensor": false,
+    "_sensor": true,
     "_friction": 0.2,
     "_restitution": 0,
     "_offset": {
@@ -1791,7 +1791,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -3.02,
+      "y": 1.016,
       "z": 0
     },
     "_lrot": {
