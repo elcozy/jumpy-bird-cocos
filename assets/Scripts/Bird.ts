@@ -1,4 +1,12 @@
-import { _decorator, Animation, CCFloat, Component, tween, Vec3 } from "cc";
+import {
+    _decorator,
+    Animation,
+    CCFloat,
+    Component,
+    RigidBody2D,
+    tween,
+    Vec3,
+} from "cc";
 const { ccclass, property } = _decorator;
 
 @ccclass("Bird")
@@ -24,11 +32,13 @@ export class Bird extends Component {
     //hit detection call
     public hitSomething: boolean;
 
-    //all the actions we want done when we start the script.
+    private startedFlying: boolean = false;
+
     onLoad() {
         //Restart the bird
         this.resetBird();
-
+        this.getComponent(RigidBody2D).awakeOnLoad = true;
+        this.getComponent(RigidBody2D).enabled = false;
         //Get the initial animation information
         this.birdAnimation = this.getComponent(Animation);
     }
@@ -47,6 +57,12 @@ export class Bird extends Component {
 
     //have the bird fly up in the air
     fly() {
+        if (!this.startedFlying) {
+            this.getComponent(RigidBody2D).enabled = true;
+
+            this.startedFlying = true;
+        }
+
         //stop the bird animation immediately
         this.birdAnimation.stop();
 

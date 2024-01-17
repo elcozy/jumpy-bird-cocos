@@ -9,7 +9,6 @@ import {
 } from "cc";
 const { ccclass, property } = _decorator;
 
-//make a random number generator for the gap
 const random = (min, max) => {
     return Math.random() * (max - min) + min;
 };
@@ -28,99 +27,65 @@ export class Pipes extends Component {
     })
     public bottomPipe: Node;
 
-    //temporary Locations
-    public tempStartLocationUp: Vec3 = new Vec3(0, 0, 0); //Temporary location of the up pipe
-    public tempStartLocationDown: Vec3 = new Vec3(0, 0, 0); //Temporary location of the bottom pipe
-    public scene = screen.windowSize; //get the size of the screen in case we decide to change the content size
+    public tempStartLocation: Vec3 = new Vec3(0, 0, 0);
 
-    //get the pipe speeds
-    public game; //get the pipe speed from GameCtrl
-    public pipeSpeed: number; //use as a final speed number
-    public tempSpeed: number; //use as the moving pipe speed
+    public scene = screen.windowSize;
 
-    //scoring mechanism
-    isPass: boolean; //Did the pipe pass the bird?
+    public game;
+    public pipeSpeed: number;
+    public tempSpeed: number;
+    public pipeWidth: number;
 
-    //what to do when the pipes load
+    private bottomPipeY: number;
+
+    hasPassedBird: boolean;
+
     onLoad() {
-        //find GameCtrl so we can use the methods
         this.game = find("GameCtrl").getComponent("GameCtrl");
 
-        //add pipespeed to temporary method
         this.pipeSpeed = this.game.pipeSpeed;
-
-        //set the original position
         this.initPos();
 
-        //set the scoring mechanism to stop activating
-        this.isPass = false;
+        this.hasPassedBird = false;
     }
 
-    //initial positions of the grounds
     initPos() {
-        //start with the initial position of x for both pipes
-        this.tempStartLocationUp.x =
-            this.topPipe.getComponent(UITransform).width + this.scene.width;
-        this.tempStartLocationDown.x =
-            this.bottomPipe.getComponent(UITransform).width + this.scene.width;
+        this.tempStartLocation.x = this.scene.width;
+        this.pipeWidth = this.bottomPipe.getComponent(UITransform).width;
 
-        //random variables for the gaps
-        let gap = random(20, 40); //passable area randomized
-        let topHeight = random(20, 200); //The height of the top pipe
+        let pipeGap = random(300, 380);
+        let topHeight = random(20, 400);
 
-        //set the top pipe initial position of y
-        this.tempStartLocationUp.y = topHeight;
+        this.tempStartLocation.y = topHeight;
+        this.bottomPipeY = topHeight - pipeGap;
 
-        //set the bottom pipe initial position of y
-        this.tempStartLocationDown.y = topHeight - gap * 10;
-
-        console.log({
-            tempStartLocationUp: this.tempStartLocationUp.y,
-            tempStartLocationDown: this.tempStartLocationDown.y,
-        });
-        //set temp locations to real ones
-        this.topPipe.setPosition(
-            this.tempStartLocationUp.x,
-            this.tempStartLocationUp.y
-        );
+        this.topPipe.setPosition(this.tempStartLocation.x, topHeight);
         this.bottomPipe.setPosition(
-            this.tempStartLocationDown.x,
-            this.tempStartLocationDown.y
+            this.tempStartLocation.x,
+            topHeight - pipeGap
         );
     }
 
     //move the pipes as we update the game
     update(deltaTime: number) {
-        //get the pipe speed
         this.tempSpeed = this.pipeSpeed * deltaTime;
 
-        //make temporary pipe locations
-        this.tempStartLocationDown = this.bottomPipe.position;
-        this.tempStartLocationUp = this.topPipe.position;
+        this.tempStartLocation = this.topPipe.position;
+        this.tempStartLocation.x -= this.tempSpeed;
 
-        //move temporary pipe locations
-        this.tempStartLocationDown.x -= this.tempSpeed;
-        this.tempStartLocationUp.x -= this.tempSpeed;
+        this.bottomPipe.setPosition(this.tempStartLocation.x, this.bottomPipeY);
+        this.topPipe.setPosition(this.tempStartLocation);
 
-        //place new positions of the pipes from temporary pipe locations
-        this.bottomPipe.setPosition(this.tempStartLocationDown);
-        this.topPipe.setPosition(this.tempStartLocationUp);
-
-        //find out if bird past a pipe, add to the score
-        if (this.isPass == false && this.topPipe.position.x <= 0) {
-            //make sure it is only counted once
-            this.isPass = true;
-
-            //add a point to the score
+        if (
+            this.topPipe.position.x <= this.scene.width / 2 &&
+            !this.hasPassedBird
+        ) {
+            this.hasPassedBird = true;
             this.game.passPipe();
         }
 
-        //if passed the screen, reset pipes to new location
-        if (this.topPipe.position.x < 0 - this.scene.width) {
-            //create a new pipe
+        if (this.topPipe.position.x <= -this.pipeWidth * 2.2) {
             this.game.createPipe();
-
-            //delete this node for memory saving
             this.destroy();
         }
     }
