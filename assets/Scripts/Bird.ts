@@ -7,6 +7,9 @@ import {
     RigidBody2D,
     tween,
     Vec3,
+    Tween,
+    easing,
+    Node,
 } from "cc";
 const { ccclass, property } = _decorator;
 
@@ -34,6 +37,8 @@ export class Bird extends Component {
     public hitSomething: boolean;
 
     private startedFlying: boolean = false;
+    public pulseHeight: number = 3.5;
+    pulseDuration: number = 0.75;
 
     onLoad() {
         //Restart the bird
@@ -43,6 +48,7 @@ export class Bird extends Component {
         this.getComponent(RigidBody2D).enabled = false;
         //Get the initial animation information
         this.birdAnimation = this.getComponent(Animation);
+        this.startPreFlightAnimation();
     }
 
     //reset the bird's location and hit detection
@@ -56,6 +62,57 @@ export class Bird extends Component {
         //reset hit detection
         this.hitSomething = false;
     }
+    preTween: Tween<any>;
+
+    private startPreFlightAnimation() {
+        if (this.startedFlying) return;
+        console.log("startPulseAnimation");
+        this.pulseHeight = 20;
+        this.pulseDuration = 0.4;
+        this.preTween = tween(this.node.position)
+            .to(
+                this.pulseDuration,
+                new Vec3(
+                    this.node.position.x,
+                    this.node.position.y + this.pulseHeight,
+                    0
+                ),
+                {
+                    easing: "smooth",
+                    onUpdate: (target: Vec3, ratio: number) => {
+                        this.node.position = target;
+                    },
+                }
+            )
+            .call(() => {
+                tween(this.node.position)
+                    .to(
+                        this.pulseDuration,
+                        new Vec3(
+                            this.node.position.x,
+                            this.node.position.y - this.pulseHeight,
+                            0
+                        ),
+                        {
+                            easing: "quadInOut",
+                            onUpdate: (target: Vec3, ratio: number) => {
+                                this.node.position = target;
+                            },
+                        }
+                    )
+                    .call(() => {
+                        console.log("preFlightAnimationq22");
+                        this.startPreFlightAnimation(); // Repeat the pre-flight animation
+                    })
+                    .start();
+            })
+            .start();
+    }
+
+    private stopPreFlightAnimation() {
+        console.log("stopPreFlightAnimation");
+        this.preTween.stop();
+    }
 
     //have the bird fly up in the air
     fly() {
@@ -63,10 +120,16 @@ export class Bird extends Component {
             this.getComponent(RigidBody2D).enabled = true;
 
             this.startedFlying = true;
+            this.birdAnimation.play();
+
+            // Stop the pre-flight animation
+            this.stopPreFlightAnimation();
+            // Reset the bird to its initial position
+            this.node.position = new Vec3(0, 0, 0);
         }
 
         //stop the bird animation immediately
-        this.birdAnimation.stop();
+        // this.birdAnimation.stop();
         console.log("jump", this.node.position.y, this.jumpHeight);
         //start the movement of the bird
         tween(this.node.position)
@@ -87,6 +150,6 @@ export class Bird extends Component {
             .start();
 
         //play the bird animation
-        this.birdAnimation.play();
+        // this.birdAnimation.play();
     }
 }

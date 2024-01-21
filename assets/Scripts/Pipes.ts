@@ -52,9 +52,8 @@ export class Pipes extends Component {
     }
 
     initPos() {
-        this.tempStartLocation.x =
-            this.topPipe.getComponent(UITransform).width + this.scene.width;
         this.pipeWidth = this.bottomPipe.getComponent(UITransform).width;
+        this.tempStartLocation.x = this.scene.width + this.pipeWidth;
 
         let pipeGap = random(300, 380);
         let topHeight = random(20, 400);
@@ -67,9 +66,8 @@ export class Pipes extends Component {
             this.tempStartLocation.x,
             topHeight - pipeGap
         );
-        // console.log("this.scene.width", screen, game);
     }
-
+    pipeCreated = false;
     //move the pipes as we update the game
     update(deltaTime: number) {
         this.tempSpeed = this.pipeSpeed * deltaTime;
@@ -88,9 +86,14 @@ export class Pipes extends Component {
             this.game.passPipe();
         }
 
-        if (this.topPipe.position.x <= -this.pipeWidth * 2.2) {
+        if (!this.pipeCreated && this.topPipe.position.x <= this.pipeWidth) {
+            this.pipeCreated = true;
             this.game.createPipe();
+        }
+
+        if (this.topPipe.position.x <= -this.pipeWidth * 3) {
             this.destroy();
+            this.node.removeFromParent();
         }
     }
 }

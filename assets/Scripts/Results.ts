@@ -1,25 +1,26 @@
-import { _decorator, Component, Label, Node } from "cc";
+import { _decorator, Component, Label, Node, sys } from "cc";
+import { TextLabel } from "./TextLabel";
 const { ccclass, property } = _decorator;
 
 @ccclass("Results")
 export class Results extends Component {
     @property({
-        type: Label,
+        type: TextLabel,
         tooltip: "Current Score",
     })
-    public scoreLabel: Label;
+    public scoreLabel: TextLabel;
 
     @property({
-        type: Label,
+        type: TextLabel,
         tooltip: "High Score",
     })
-    public highScore: Label;
+    public highScore: TextLabel;
 
     @property({
-        type: Label,
+        type: TextLabel,
         tooltip: "Try Again?",
     })
-    public resultEnd: Label;
+    public resultEnd: TextLabel;
 
     //variables needed for the scores
     maxScore: number = 0; //saved high score
@@ -31,7 +32,7 @@ export class Results extends Component {
         this.currentScore = num;
 
         //display new score
-        this.scoreLabel.string = `${this.currentScore}`;
+        this.scoreLabel.updateText(`${this.currentScore}`);
     }
 
     //resets the score back to 0 and hides game over information
@@ -43,10 +44,14 @@ export class Results extends Component {
         this.hideResult();
 
         //reset current score label
-        this.scoreLabel.string = `${this.currentScore}`;
+        this.scoreLabel.updateText(`${this.currentScore}`);
     }
 
     //add a point to the score
+    setScore(newScore: number) {
+        //add a point to the score
+        this.updateScore(newScore);
+    }
     addScore() {
         //add a point to the score
         this.updateScore(this.currentScore + 1);
@@ -56,19 +61,44 @@ export class Results extends Component {
     showResult() {
         //check if it's the high score
         this.maxScore = Math.max(this.maxScore, this.currentScore);
-
+        this.saveHighScore();
         //activate high score label
-        this.highScore.string = `High Score is: ${this.maxScore}`;
-        this.highScore.node.active = true;
+        this.highScore.updateText(`High Score is: ${this.maxScore}`);
+        this.highScore.activateNode();
 
         //activate try again label
-        this.resultEnd.node.active = true;
+        this.resultEnd.activateNode();
     }
 
     //hide results and request for a new game when the new game starts
     hideResult() {
         //hide the high score and try again label.
-        this.highScore.node.active = false;
-        this.resultEnd.node.active = false;
+        this.highScore.deactivateNode();
+        this.resultEnd.deactivateNode();
+    }
+
+    getHighScore(): number {
+        // Get the current high score
+        let storedHighScore = sys.localStorage.getItem("highScore");
+        console.log("storedHighScore", storedHighScore);
+        if (storedHighScore !== null) {
+            storedHighScore = parseInt(storedHighScore);
+        } else {
+            storedHighScore = 0;
+        }
+        return storedHighScore;
+    }
+
+    setHighScore(newHighScore: number) {
+        // Save the new high score to local storage
+        sys.localStorage.setItem("highScore", newHighScore.toString());
+    }
+
+    saveHighScore() {
+        this.setHighScore(Math.max(this.maxScore, this.currentScore));
+    }
+    loadHighScore() {
+        this.maxScore = this.getHighScore();
+        console.log("    this.maxScore", this.maxScore);
     }
 }

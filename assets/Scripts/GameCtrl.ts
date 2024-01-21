@@ -11,6 +11,7 @@ import {
     IPhysics2DContact,
     KeyCode,
     Node,
+    sys,
 } from "cc";
 import { Ground } from "./Ground";
 import { Results } from "./Results";
@@ -72,12 +73,12 @@ export class GameCtrl extends Component {
 
         //reset score to zero
         this.result.resetScore();
-
+        this.result.loadHighScore();
         //game is over
         this.isOver = true;
 
         //pause the game
-        director.pause();
+        // director.pause();
     }
 
     onClickOrSpace() {
@@ -148,6 +149,7 @@ export class GameCtrl extends Component {
     startGame() {
         //hide high score and other text
         this.result.hideResult();
+        this.result.loadHighScore();
 
         //resume game
         director.resume();
