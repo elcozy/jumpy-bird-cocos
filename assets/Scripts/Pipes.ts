@@ -6,6 +6,8 @@ import {
     screen,
     find,
     UITransform,
+    view,
+    game,
 } from "cc";
 const { ccclass, property } = _decorator;
 
@@ -50,7 +52,8 @@ export class Pipes extends Component {
     }
 
     initPos() {
-        this.tempStartLocation.x = this.scene.width;
+        this.tempStartLocation.x =
+            this.topPipe.getComponent(UITransform).width + this.scene.width;
         this.pipeWidth = this.bottomPipe.getComponent(UITransform).width;
 
         let pipeGap = random(300, 380);
@@ -64,6 +67,7 @@ export class Pipes extends Component {
             this.tempStartLocation.x,
             topHeight - pipeGap
         );
+        // console.log("this.scene.width", screen, game);
     }
 
     //move the pipes as we update the game

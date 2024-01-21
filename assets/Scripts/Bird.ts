@@ -2,7 +2,7 @@ import {
     _decorator,
     Animation,
     CCFloat,
-    CircleCollider2D,
+    PolygonCollider2D,
     Component,
     RigidBody2D,
     tween,
@@ -22,7 +22,7 @@ export class Bird extends Component {
         type: CCFloat,
         tooltip: "how long does he fly?",
     })
-    public jumpDuration: number = 3.5;
+    public jumpDuration: number = 0.3;
 
     //Animation property of the bird
     public birdAnimation: Animation;
@@ -39,7 +39,7 @@ export class Bird extends Component {
         //Restart the bird
         this.resetBird();
         this.getComponent(RigidBody2D).awakeOnLoad = true;
-        this.getComponent(CircleCollider2D).sensor = true;
+        this.getComponent(PolygonCollider2D).sensor = true;
         this.getComponent(RigidBody2D).enabled = false;
         //Get the initial animation information
         this.birdAnimation = this.getComponent(Animation);
