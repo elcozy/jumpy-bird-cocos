@@ -232,7 +232,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -429.004,
+      "y": -431.456,
       "z": 0
     },
     "_lrot": {
@@ -261,7 +261,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Canvas",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 1
@@ -301,8 +301,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 320,
-      "y": 479.99999999999994,
+      "x": 640,
+      "y": 480.00000000000006,
       "z": 0
     },
     "_lrot": {
@@ -383,18 +383,18 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "_projection": 0,
+    "_projection": 1,
     "_priority": 0,
-    "_fov": 45,
+    "_fov": 51.372,
     "_fovAxis": 0,
-    "_orthoHeight": 479.99999999999994,
+    "_orthoHeight": 500,
     "_near": 0,
     "_far": 1000,
     "_color": {
       "__type__": "cc.Color",
       "r": 0,
-      "g": 0,
-      "b": 0,
+      "g": 174,
+      "b": 241,
       "a": 255
     },
     "_depth": 1,
@@ -994,7 +994,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Results",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 7
@@ -1049,7 +1049,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Score",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 22
@@ -1097,7 +1097,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Curr_Score",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 23
@@ -1185,7 +1185,7 @@
   {
     "__type__": "cc.Node",
     "_name": "High_Score",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 23
@@ -1273,7 +1273,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Try_Again",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 22
@@ -1361,7 +1361,7 @@
   {
     "__type__": "cc.Node",
     "_name": "FlappyBird",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "__editorExtras__": {},
     "_parent": {
       "__id__": 22
@@ -1554,8 +1554,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 640,
-      "height": 959.9999999999998
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1577,7 +1577,7 @@
     "_cameraComponent": {
       "__id__": 9
     },
-    "_alignCanvasWithScreen": true,
+    "_alignCanvasWithScreen": false,
     "_id": "12O/ljcVlEqLmVm3U2gEOQ"
   },
   {
@@ -1590,12 +1590,12 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "_alignFlags": 45,
+    "_alignFlags": 5,
     "_target": null,
-    "_left": 0,
+    "_left": 640,
     "_right": 0,
-    "_top": 5.684341886080802e-14,
-    "_bottom": 5.684341886080802e-14,
+    "_top": 479.99999999999994,
+    "_bottom": 480.00000000000006,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,
@@ -1607,7 +1607,7 @@
     "_originalWidth": 0,
     "_originalHeight": 0,
     "_alignMode": 2,
-    "_lockFlags": 0,
+    "_lockFlags": 45,
     "_id": "c5V1EV8IpMtrIvY1OE9t2u"
   },
   {
